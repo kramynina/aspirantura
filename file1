@@ -1,0 +1,253 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# импортирование модулей python
+from tkinter import *
+import numpy as np
+import pandas as pd
+import math
+import time
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy.stats as st
+from tkinter import messagebox
+
+# класс главного окна
+class main:
+  def __init__(self, master):
+    self.master = master
+    self.master.title('Главное меню')
+    self.master.geometry('200x100')
+    self.button1 = Button(self.master,
+                         text = 'Рассчитать значения',
+                         command = self.openframe1)
+    #self.button1.grid(row=4, column=2)
+    self.button1.pack(side = TOP, padx=5, pady=7)
+    self.button2 = Button(self.master,
+                         text = 'Построить гистограмму',
+                         command = self.openframe2)
+    self.button2.pack(side = TOP, padx=5, pady=5)
+    #self.button2.grid(row=2, column=2)
+    self.text = Text(self.master,
+                     background = 'white')
+    self.text.pack(side = TOP,
+                   fill = BOTH,
+                   expand = TRUE)
+    self.master.mainloop()
+
+  def openframe1(self):
+    self.dialog = child(self.master)
+    self.sendValue = self.text.get('0.0', END)
+    self.returnValue = self.dialog.go(self.sendValue)
+    if self.returnValue:
+      self.text.delete('0.0', END)
+      self.text.insert('0.0', self.returnValue)
+  
+  def openframe2(self):
+    self.dialog = children(self.master)
+    self.sendValue = self.text.get('0.0', END)
+    self.returnValue = self.dialog.go(self.sendValue)
+    if self.returnValue:
+      self.text.delete('0.0', END)
+      self.text.insert('0.0', self.returnValue)    
+
+# класс дочернего окна
+class child:
+    def __init__(self, master):
+        self.slave = Toplevel(master)
+        self.slave.title('Рассчет значений')
+        self.slave.geometry('200x150+500+375')
+        self.button = Button(self.slave,
+                         text = 'Рассчет',
+                         command = self.accept)
+        self.button.pack(side = BOTTOM)
+        self.text = Text(self.slave,
+                     background = 'white')
+        self.text.pack(side = TOP,
+                   fill = BOTH,
+                   expand = TRUE)
+
+    def go(self, myText = ''):
+        self.text.insert('0.0', myText)
+        self.newValue = None
+        self.slave.grab_set()
+        self.slave.focus_set()
+        self.slave.wait_window()
+        return self.newValue
+
+    def calculate_bmi():
+        mathy_ojid = int(math_ojid.get())
+        disp = int(dispersy.get())
+        vm_1 = int(vm_m.get())
+        n0_1 = int(n0_0.get())
+        vg_1 = int(vg_g.get())
+        Q_1 = int(qq_q.get())
+        vy_1 = int(vy_y.get())
+        y_1 = int(yy_y.get())
+        x_1 = ((vg_1 / vy_1) * y_1)
+        r0_1 = x_1 * 0.05
+        x_1 = round(x_1, 1)
+        r0_1 = round(r0_1, 1)
+        beta = math.sqrt(math.log(1 + (disp/mathy_ojid/mathy_ojid),math.exp(1)))
+        alpha = math.log(mathy_ojid,math.exp(1)) - ((beta*beta)/2)
+        
+   
+        window = Tk()
+        window.title('Вывод результатов')
+        frame_1 = Frame(
+        window,
+        padx=12,
+        pady=12
+               )
+        frame_1.pack(expand=True)
+        Lbl_3 = Label(frame_1, text = f'Beta = {beta}', font=('Arial', 14))
+        Lbl_4 = Label(frame_1, text = f'Alpha = {alpha}', font=('Arial', 14))
+        Lbl = Label(frame_1, text = f'Начальное значение для годового тоннажа (R0) = {r0_1}', font=('Arial', 14))
+        Lbl_2 = Label(frame_1, text = f'Фин. средства, для выполнения годового тоннажа (X) = {x_1}', font=('Arial', 14))
+        Lbl_2.grid(column=5, row=9)
+        Lbl.grid(column=5, row=12)
+        Lbl_3.grid(column=5, row=3)
+        Lbl_4.grid(column=5, row=6)
+        window.geometry('500x400')
+        window.mainloop()
+
+child = Frame(
+   padx=12,
+   pady=12
+)
+child.pack(expand=True)
+   
+disper= Label(
+    child,
+    text="Дисперсия  "
+)
+disper.grid(row=1, column=1)
+ 
+mathematic_ojid = Label(
+   child,
+   text="Математическое ожидание  "
+)
+mathematic_ojid.grid(row=2, column=1)
+ 
+n0 = Label(
+   child,
+   text="Число моделируемых реализаций (n0)  "
+)
+n0.grid(row=3, column=1)
+ 
+vm = Label(
+   child,
+   text="Максимальный пропущенный тоннаж (VM)  ",
+)
+vm.grid(row=4, column=1)
+
+vg = Label(
+   child,
+   text="Годовой перевезенный тоннаж (Vg)  ",
+)
+vg.grid(row=5, column=1)
+
+qq = Label(
+   child,
+   text="Число типов элементов (Q)  ",
+)
+qq.grid(row=6, column=1)
+
+vy = Label(
+   child,
+   text="Значение интервала между поступлениями (Vy)  ",
+)
+vy.grid(row=7, column=1)
+
+y_y = Label(
+   child,
+   text="Величина единичного поступления (у)  ",
+)
+y_y.grid(row=8, column=1)
+
+dispersy = Entry(
+   child,
+)
+dispersy.grid(row=1, column=2, pady=5)
+
+math_ojid = Entry(
+   child,
+)
+math_ojid.grid(row=2, column=2, pady=5)
+ 
+n0_0 = Entry(
+   child,
+)
+n0_0.grid(row=3, column=2, pady=5)
+ 
+vm_m = Entry(
+   child,
+)
+vm_m.grid(row=4, column=2, pady=5)
+
+vg_g = Entry(
+   child,
+)
+vg_g.grid(row=5, column=2, pady=5)
+
+qq_q = Entry(
+   child,
+)
+qq_q.grid(row=6, column=2, pady=5)
+
+vy_y = Entry(
+   child,
+)
+vy_y.grid(row=7, column=2, pady=5)
+
+yy_y = Entry(
+   child,
+)
+yy_y.grid(row=8, column=2, pady=5)
+ 
+cal_btn = Button(
+   child,
+   text=' Рассчитать значения ',
+   command=calculate_bmi
+)
+cal_btn.grid(row=9, column=2)
+
+def accept(self):
+    self.newValue = self.text.get('0.0', END)
+    self.slave.destroy()
+
+# класс дочернего окна2
+class children:
+    def __init__(self, master):
+        self.slave = Toplevel(master)
+        self.slave.title('Построение гистограммы')
+        self.slave.geometry('200x150+500+375')
+        self.button = Button(self.slave,
+                text = 'Гистограмма',
+                command = self.accept)
+        self.button.pack(side = BOTTOM)
+        self.text = Text(self.slave,
+                background = 'white')
+        self.text.pack(side = TOP,
+                fill = BOTH,
+                expand = TRUE)
+
+    def go(self, myText = ''):
+        self.text.insert('0.0', myText)
+        self.newValue = None
+        self.slave.grab_set()
+        self.slave.focus_set()
+        self.slave.wait_window()
+        return self.newValue
+
+    def accept(self):
+        self.newValue = self.text.get('0.0', END)
+        self.slave.destroy()
+
+
+# создание окна
+root = Tk()
+
+# запуск окна
+main(root)
