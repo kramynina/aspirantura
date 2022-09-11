@@ -1,0 +1,113 @@
+from tkinter import *
+import tkinter as tk
+from tkinter import messagebox
+import numpy as np
+import pandas as pd
+import math
+import time
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy.stats as st
+
+# functions:
+def glue():
+    # Окно 1
+    glue_window = tk.Toplevel()
+    glue_window.title('Построение гистограммы')
+    glue_window.geometry("600x300")
+
+    label = tk.Label(glue_window, text = "Дисперсия: ")
+    label.grid(row=0, column=0)
+    label = tk.Label(glue_window, text="Математическое ожидание: ")
+    label.grid(row=1, column=0)
+
+    disp = Entry(glue_window)
+    disp.grid(row=0, column=1)
+    
+    mathy_ojid = Entry(glue_window)
+    mathy_ojid.grid(row=1, column=1)
+    
+    a = int(mathy_ojid.get())
+    b = int(disp.get())
+    
+    cal_btn = Button(glue_window,text=' Рассчитать значения ', command = count)
+    cal_btn.grid(row=4, column=1)
+
+def count():
+    # переменные
+    a = int(mathy_ojid.get())
+    b = int(disp.get())
+    beta = math.sqrt(math.log (1 + a / b / b,math.exp(1))) # Вычисляем бета
+    alpha = math.log(b),math.exp(1) - ((beta*beta)/2)     # Вычисляем альфа
+    messagebox.showinfo("title", f"Результат: {beta}")
+    #window = Tk()
+    #window.title('Вывод результатов')
+    #frame_1 = Frame(window, padx=12, pady=12)
+    #frame_1.pack(expand=True)
+    #Lbl = Label(frame_1, text = f'Beta = {beta}', font=('Arial', 14))
+    #Lbl_2 = Label(frame_1, text = f'Alpha = {alpha}', font=('Arial', 14))
+    #Lbl_2.grid(column=5, row=1)
+    #Lbl.grid(column=5, row=2)
+    #window.geometry('500x400')
+    #window.mainloop()
+        
+def penoblock():
+    penoblock_window = tk.Toplevel()
+    penoblock_window.title('Расчет показателей')
+    penoblock_window.geometry("600x300")
+    
+    label = tk.Label(penoblock_window, text = "Число моделируемых реализаций (n0): ")
+    label.grid(column=0, row=0)
+    label = tk.Label(penoblock_window, text="Максимальный пропущенный тоннаж (VM): ")
+    label.grid(column=0, row=1)
+    label = tk.Label(penoblock_window, text="Годовой перевезенный тоннаж (Vg): ")
+    label.grid(column=0, row=2)
+    label = tk.Label(penoblock_window, text="Число типов элементов (Q)): ")
+    label.grid(column=0, row=3)
+    label = tk.Label(penoblock_window, text="Значение интервала между поступлениями (Vy): ")
+    label.grid(column=0, row=4)
+    label = tk.Label(penoblock_window, text="Величина единичного поступления (у): ")
+    label.grid(column=0, row=5)
+
+    n0_0 = Entry(penoblock_window)
+    n0_0.grid(row=0, column=1, pady=5)
+ 
+    vm_m = Entry(penoblock_window)
+    vm_m.grid(row=1, column=1, pady=5)
+
+    vg_g = Entry(penoblock_window)
+    vg_g.grid(row=2, column=1, pady=5)
+
+    qq_q = Entry(penoblock_window)
+    qq_q.grid(row=3, column=1, pady=5)
+
+    vy_y = Entry(penoblock_window)
+    vy_y.grid(row=4, column=1, pady=5)
+
+    yy_y = Entry(penoblock_window)
+    yy_y.grid(row=5, column=1, pady=5)
+    
+    cal_btnn = Button(penoblock_window,text=' Рассчитать значения ', command=calculate_bmi)
+    cal_btnn.grid(row=6, column=1)
+    
+def calculate_bmi():
+   x_1 = ((vg_g / vy_y) * yy_y)
+   r0_1 = x_1 * 0.05
+   x_1 = round(x_1, 1)
+   r0_1 = round(r0_1, 1)
+   messagebox.showinfo("title", f"Результат: {r0_1}")
+
+# Главное окно:
+root = Tk()
+root.resizable(width = False, height = False)
+root.geometry("500x100")
+root.title("Главное меню")
+
+# Элементы главного окна:
+glue = Button(root, text="Построение гистограммы", command = glue)
+glue.grid(column=1, row=0)
+penoblock = Button(root, text="Расчет показателей", command = penoblock)
+penoblock.grid(column=2, row=0)
+
+root.mainloop()
