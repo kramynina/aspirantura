@@ -1,0 +1,133 @@
+from itertools import count
+import tkinter as tk
+from tkinter import Frame, Tk, messagebox
+import numpy as np
+import pandas as pd
+import math
+import time
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy.stats as st
+
+from new import glue
+
+LARGE_FONT= ("Verdana", 12)
+
+class SeaofBTCapp(tk.Tk):
+
+    def __init__(self, *args, **kwargs):
+        
+        tk.Tk.__init__(self, *args, **kwargs)
+        container = tk.Frame(self)
+
+        container.pack(side="top", fill="both", expand = True)
+
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+
+        for F in (StartPage, PageOne, PageTwo):
+
+            frame = F(container, self)
+
+            self.frames[F] = frame
+
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+
+        frame = self.frames[cont]
+        frame.tkraise()
+
+        
+class StartPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent)
+        label = tk.Label(self, text="Главное меню", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button = tk.Button(self, text="Построение гистограммы",
+                            command=lambda: controller.show_frame(PageOne))
+        button.pack()
+        button2 = tk.Button(self, text="Расчет показателей", command=lambda: controller.show_frame(PageTwo))
+        button2.pack()
+
+        #button3 = tk.Button(self, text="Рассчитать", command=count)
+        #button3.pack()
+
+class PageOne(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Построение гистограммы", font=LARGE_FONT)
+        label.grid(row=0, column=0)
+
+        button1 = tk.Button(self, text="Главное меню",
+                            command=lambda: controller.show_frame(StartPage))
+        button1.grid(row=5, column=1)
+
+        button2 = tk.Button(self, text="Расчет показателей",
+                            command=lambda: controller.show_frame(PageTwo))
+        button2.grid(row=5, column=2)
+    
+
+    def glue(self):
+        glue_window = tk.Toplevel()
+        glue_window.title('Построение гистограммы')
+        glue_window.geometry("600x300")
+        frame = tk.Label(glue_window, padx=12, pady=12)
+        frame.pack(expand=True)    
+        label = tk.Label(glue_window, text = "Дисперсия: ")
+        label.grid(row=1, column=1)
+        label = tk.Label(glue_window, text="Математическое ожидание: ")
+        label.grid(row=2, column=2)
+        button3 = tk.Button(glue_window,text=' Рассчитать значения ', command = count)
+        button3.grid(row=4, column=3)
+        
+        disp = tk.Entry(glue_window)
+        disp.grid(row=1, column=2)
+    
+        mathy_ojid = tk.Entry(glue_window)
+        mathy_ojid.grid(row=2, column=3)
+    
+        #cal_btn = tk.Button(glue_window,text=' Рассчитать значения ', command = glue)
+        #cal_btn.grid(row=4, column=4)
+        
+    def count(self):    
+        #a = int(mathy_ojid.get())
+        #b = int(disp.get())
+        #beta = math.sqrt(math.log (1 + a / b / b,math.exp(1))) # Вычисляем бета
+        #alpha = math.log(b),math.exp(1) - ((beta*beta)/2)     # Вычисляем альфа
+        beta = math.sqrt(math.log (1 + (disp.get()) / (mathy_ojid.get()) / (mathy_ojid.get()),math.exp(1))) # Вычисляем бета
+        alpha = math.log(mathy_ojid.get()),math.exp(1) - ((beta*beta)/2)     # Вычисляем альфа
+        messagebox.showinfo("title", f"Результат: {beta}")
+    
+    #window = tk.Frame()
+    #window.title('Исходные данные')
+    #window.geometry('600x500')
+     
+
+class PageTwo(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Расчет показателей", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1 = tk.Button(self, text="Главное меню",
+                            command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+
+        button2 = tk.Button(self, text="Построение гистограммы",
+                            command=lambda: controller.show_frame(PageOne))
+        button2.pack()
+        
+
+
+app = SeaofBTCapp()
+app.mainloop()
